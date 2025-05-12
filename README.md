@@ -71,7 +71,8 @@ on [TodoMVC](https://todomvc.com/).
 
 ### Objective 2: Undo/Redo
 
-Include undo and redo buttons in the footer for any changes the user has made.
+Include undo and redo buttons in the footer. These buttons should enable a user to
+undo and redo changes that the user has made while interacting with the app.
 
 
 ## Turning In A Solution
