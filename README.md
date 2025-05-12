@@ -1,55 +1,102 @@
-# The Temelpa Take-Home Assignment
+# Rainbow - Frontend Take-Home Assignment
 
-Please create a private version of this repo, complete the objectives, and once you
-are finished, send a zip of your repo to us.
+Please create a private fork of this repo, complete the objectives.
+Once you are finished, send us an email with a link to your private repo.
 
-# The Assignment
+## To Create A Private Fork
 
-In this repo, you're given an incomplete version of
-[TodoMVC](https://todomvc.com/). The assignment is to first finish
-it, and then add a few extensions on top of the TodoMVC. What
-exists in the repository was taken from a boilerplate implementation,
-if you want to radically refactor the code go right ahead.
+1. Clone the repository to your local machine
+```bash
+git clone git@github.com:rainbowmga/todomvc.git
+cd todomvc
+```
 
-The following are the objectives you'll need to complete to finish the
-take-home.
+2. Create a new private repository on your GitHub account (go to https://github.com/new,
+select "Private").
+
+3. Add your new private repo as a remote:
+```bash
+git remote rename origin upstream
+git remote add origin https://github.com/YOUR_USERNAME/NEW_PRIVATE_REPO.git
+```
+
+4. Push the code to your new private repo:
+```bash
+git push -u origin master
+```
+
+
+## To Run The App
+
+1. Install dependencies
+```bash
+yarn install
+```
+
+2. Start the app at localhost:3000/
+```bash
+yarn dev
+```
+
+What you will see is a rather incomplete version of a TODO web app, where
+you can only type into a textbox and clear the textbox when you hit enter.
+
+![Demo](https://github.com/rainbowmga/todomvc/blob/master/assets/starter_demo.gif)
+
+
+## The Assignment
+
+This incomplete TODO app is actually an incomplete version of an open source
+project, [TodoMVC](https://todomvc.com/). There are actually demoable examples
+in that project site that shows what a complete version of the app looks like (i.e.
+[jQuery implementation](https://todomvc.com/examples/jquery/dist/#/all))
+
+The assignment is to first finish our incomplete skeleton of TodoMVC, and then
+add a few extensions on top of the TodoMVC. Note that this repo draws from a
+boilerplate implementation, so feel free to refactor the code to improve it.
+
 
 ### Objective 1: Finish The Implementation
 
-The repo starts you off with implmentations of the individual components without
-implementing global state management. Additionally, there may or may not be
-small bugs in the components' implementation. So don't assume that you don't
-need to modify the components. Your goal is to finish the TodoMVC implementation,
-you may look at existing implementations (of course excluding their source code)
-to see what you'll need to do.
+Specifically, the repo provides implementations of the individual components, but
+does not include global state management. Additionally, some components may contain
+minor bugs. So, don't assume the components are complete or bug-free — you may need
+to modify them. Your goal is to finish the TodoMVC implementation. You're encouraged
+to reference existing implementations (excluding source code) to understand the
+expected functionality.
 
-Once you're done, the implementation should behave exactly the same way as the other
-TodoMVC implementations you've seen.
+Once you're done, the implementation should behave exactly the same way as the examples
+on [TodoMVC](https://todomvc.com/).
+
 
 ### Objective 2: Undo/Redo
 
-Add two buttons at the footer to allow the user to undo or redo any change the user has made.
+Include undo and redo buttons in the footer for any changes the user has made.
+
 
 ## Turning In A Solution
 
-Prior to turning in your solution, create a change-log that outlines each commit. 
-we'll likely ask you to go over some of your thinking and design choices later so it'll be
-helpful for you to collect some of that in writing as you complete the assignment.
+Before submitting your solution, please include documentation outlining the reasoning behind
+your changes — such as a changelog or updates to the README.md. In the follow-up interview,
+we'll likely ask about your design decisions and implementation choices, so having your
+thoughts documented in advance will be helpful.
 
-Once you're done, just send us an email of your solution zipped. Remember to remove `node_modules/` 
-and `.next/` before creating the zip. 
+Once you're finished, please send us an email with a link to your private repo so we can
+access and review it.
+
 
 ## Assumptions
 
 You should be able to complete this assignment without importing any additional dependencies.
 
-We expect you to work as if this task was a normal project at work. So please write
+We expect you to work on this task as if it was a normal project at work. So please write
 your code in a way that fits your intuitive notion of operating within best practices.
-ydditionally, you should at the very least have a different commmit for each individual objective,
-Ideally, more as you go through process of completing the take-home. Also we like
-to see your thought process and fixes as you make changes. So don't be afraid of
-committing code that you later edit. No need to squash those commits.
 
-Many parts of the assignment is intentionally ambiguious. If you have a question, definitely
-reach out. But for many of these ambiguiuties, we want to see how you independently make
-software design decisions.
+We recommend making separate commits for each objective to help illustrate how you approached
+and broke down the assignment.  Don't hesitate to commit work that you later revise or remove
+— it's valuable to see your process evolve over time.
+
+Parts of this assignment are left intentionally ambiguous. How you resolve these
+ambiguities will help us understand your decision-making process.
+
+However, if you do have questions, don't hesitate to reach out!
