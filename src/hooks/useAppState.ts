@@ -10,7 +10,8 @@ type AppState = {
 export default function useAppState(initialState: AppState): {
     add(title: string): void;
     mark(id: number): void;
-    markAll(completed: boolean): void;
+    markAllActive(): void;
+    markAllCompleted(): void;
     remove(id: number): void;
     edit(id: number, editing: boolean): void;
     update(id: number, title: string): void;
@@ -45,7 +46,16 @@ export default function useAppState(initialState: AppState): {
         appState.todos = appState.todos.map((t: Todo) => t.id !== id ? t : { ...t, completed: !t.completed });
         save();
     };
-    const markAll = (completed: boolean) => {};
+
+    const markAllActive = () => {
+        appState.todos = appState.todos.map((t: Todo) => !t.completed ? t : { ...t, completed: !t.completed });
+        save();
+    };
+
+    const markAllCompleted = () => {
+        appState.todos = appState.todos.map((t: Todo) => t.completed ? t : { ...t, completed: !t.completed });
+        save();
+    };
     
     const remove = (id: number) => {
         appState.todos = appState.todos.filter((t: Todo) => t.id !== id);
@@ -95,5 +105,5 @@ export default function useAppState(initialState: AppState): {
         }
     };
 
-    return { add, mark, markAll, remove, edit, update, removeDone, getTodos, undo, redo };
+    return { add, mark, markAllActive, markAllCompleted, remove, edit, update, removeDone, getTodos, undo, redo };
 }

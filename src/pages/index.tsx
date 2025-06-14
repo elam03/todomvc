@@ -30,7 +30,7 @@ export default function Home() {
         };
     }, [router.events]);
 
-    const { add, mark, markAll, remove, edit, update, removeDone, getTodos, undo, redo } = useAppState({ todos: [], filter: "all" });
+    const { add, mark, markAllActive, markAllCompleted, remove, edit, update, removeDone, getTodos, undo, redo } = useAppState({ todos: [], filter: "all" });
 
     const filters = {
         active: (t: Todo) => !t.completed,
@@ -65,12 +65,8 @@ export default function Home() {
                     <TodoMarkAll
                         numCompletedTodos={numCompletedTodos}
                         numTodos={totalTodos}
-                        onMarkAllActive={() =>
-                            console.log("onMarkAllActive was called")
-                        }
-                        onMarkAllCompleted={() =>
-                            console.log("onMarkAllCompleted was called")
-                        }
+                        onMarkAllActive={() => markAllActive()}
+                        onMarkAllCompleted={() => markAllCompleted()}
                     />
                     <TodoList
                         todos={todos}
@@ -90,10 +86,11 @@ export default function Home() {
                     
                 </TodoFooter>
 
-                <div>
-                    <button onClick={ () => undo() }>Undo</button>
-                    <button onClick={ () => redo() }>Redo</button>
-                </div>
+            </section>
+
+            <section>
+                <button onClick={ () => undo() }>Undo</button>
+                <button onClick={ () => redo() }>Redo</button>
             </section>
 
             <footer className="info">
