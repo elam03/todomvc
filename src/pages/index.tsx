@@ -48,7 +48,7 @@ export default function Home() {
     }
 
     const totalTodos = todos.length;    
-    const numActiveTodos = todos.filter((t) => !t.completed).length;
+    const numActiveTodos = todos.filter(filterActive).length;
     const numCompletedTodos = totalTodos - numActiveTodos;
 
     return (
