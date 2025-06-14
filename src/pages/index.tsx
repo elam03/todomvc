@@ -7,64 +7,30 @@ import TodoMarkAll from "src/components/TodoMarkAll";
 import { Todo } from "src/models/todo";
 import { Filter } from "src/models/filter";
 import { useEffect, useState } from "react";
-import useUndo from "src/hooks/useUndo";
-
-// let todos: [Todo] = [
-//     {id: 1, title: "abc", editing: false, completed: false},
-// ];
-
-// class AppState {
-//     private todos: Todo[] = [];
-//     private filter: Filter = "all";
-//     private onRefresh: () => void;
-
-//     constructor(onRefresh: () => void) {
-//         this.onRefresh = onRefresh;
-//     }
-
-//     addNewTodo(title: string): void {
-//         this.todos.concat(
-//             { id: this.todos.length, title, editing: false, completed: false },
-//         );
-        
-//         this.onRefresh();
-//     }
-
-//     getTodos(): Todo[] {
-//         return this.todos;
-//     }
-// }
-
-// let appState: AppState = AppState(null);
-// let appState: AppState = { todos: [], filter: "all" }
-
-type AppState = {
-    todos: Todo[];
-    filter: Filter;
-}
-
-// interface AppState {
-//     todos?: Todo[];
-// }
-
-// type AppState = Todo[];
+import useAppState from "src/hooks/useAppState";
 
 export default function Home() {
-    // const [ updatedAt, setUpdatedAt ] = useState(Date.now());
+    const [ filter, setFilter ] = useState<Filter>("all"); 
 
-    // const refresh = () => {
-    //     setUpdatedAt(Date.now());
+    const { add, mark, markAll, remove, edit, update, removeDone, getTodos, undo, redo } = useAppState({ todos: [], filter: "all" });
 
-    //     console.log(`refresh was called: '${updatedAt}'`);
-    // };
-    
-    // useEffect(() => {
-    //     appState = new AppState(refresh);
-    // }, []);
-    // const [ appState, setAppState ] = useState(new AppState(refresh));
-    // const [ appState, setAppState ] = useState(new AppState(() => setUpdatedAt(Date.now())));
+    const filterAll = (t: Todo) => t;
+    const filterActive = (t: Todo) => !t.completed;
+    const filterCompleted = (t: Todo) => t.completed;
 
-    const { appState, setAppState, undo, redo, save } = useUndo<AppState>({ todos: [], filter: "all" });
+    let todos = getTodos();
+
+    if (filter == "all") {
+        todos = todos.filter(filterAll);
+    } else if (filter == "active") {
+        todos = todos.filter(filterActive);
+    } else {
+        todos = todos.filter(filterCompleted);
+    }
+
+    const totalTodos = todos.length;    
+    const numActiveTodos = todos.filter((t) => !t.completed).length;
+    const numCompletedTodos = totalTodos - numActiveTodos;
 
     return (
         <>
@@ -75,25 +41,13 @@ export default function Home() {
             <section className="todoapp">
                 <header className="header">
                     <h1>todos</h1>
-                    <NewTodoInput
-                        onNewTodo={(title) => {
-                            // appState.addNewTodo(title);
-                            // appState.todos.concat({id: appState.todos.length, title, editing: false, completed: false});
-                            // todos.push({id: todos.length, title, editing: false, completed: false});
-                            
-                            const newTodo = {id: appState.todos.length, title, editing: false, completed: false};
-
-                            setAppState({ ...appState, todos: [ ...appState.todos, newTodo ] });
-
-                            console.log(`onNewTodo was called '${title}'`);
-                        }}
-                    />
+                    <NewTodoInput onNewTodo={(title) => add(title) } />
                 </header>
 
                 <section className="main">
                     <TodoMarkAll
-                        numCompletedTodos={0}
-                        numTodos={0}
+                        numCompletedTodos={numCompletedTodos}
+                        numTodos={totalTodos}
                         onMarkAllActive={() =>
                             console.log("onMarkAllActive was called")
                         }
@@ -102,20 +56,27 @@ export default function Home() {
                         }
                     />
                     <TodoList
-                        todos={appState.todos}
-                        onEdit={() => console.log()}
-                        onDelete={() => console.log()}
-                        onToggleComplete={() => console.log()}
-                        onSetTitle={() => console.log()}
+                        todos={todos}
+                        onEdit={(id) => edit(id, true)}
+                        onDelete={(id) => remove(id)}
+                        onToggleComplete={(id) => mark(id, true)}
+                        onSetTitle={(id, title) => update(id, title)}
                     />
                 </section>
 
                 <TodoFooter
                     filter="all"
-                    numActiveTodos={0}
-                    numTodos={0}
-                    onClearCompleted={() => {}}
-                />
+                    numActiveTodos={numActiveTodos}
+                    numTodos={totalTodos}
+                    onClearCompleted={ () => removeDone() }
+                >
+                    
+                </TodoFooter>
+
+                <div>
+                    <button onClick={ () => undo() }>Undo</button>
+                    <button onClick={ () => redo() }>Redo</button>
+                </div>
             </section>
 
             <footer className="info">
