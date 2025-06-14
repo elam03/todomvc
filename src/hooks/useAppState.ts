@@ -9,7 +9,7 @@ type AppState = {
 
 export default function useAppState(initialState: AppState): {
     add(title: string): void;
-    mark(id: number, completed: boolean): void;
+    mark(id: number): void;
     markAll(completed: boolean): void;
     remove(id: number): void;
     edit(id: number, editing: boolean): void;
@@ -41,8 +41,8 @@ export default function useAppState(initialState: AppState): {
         save();
     };
 
-    const mark = (id: number, newCompleted: boolean) => {
-        appState.todos = appState.todos.map((t: Todo) => t.id !== id ? t : { ...t, completed: newCompleted });
+    const mark = (id: number) => {
+        appState.todos = appState.todos.map((t: Todo) => t.id !== id ? t : { ...t, completed: !t.completed });
         save();
     };
     const markAll = (completed: boolean) => {};

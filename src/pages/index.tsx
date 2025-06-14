@@ -59,7 +59,7 @@ export default function Home() {
                         todos={todos}
                         onEdit={(id) => edit(id, true)}
                         onDelete={(id) => remove(id)}
-                        onToggleComplete={(id) => mark(id, true)}
+                        onToggleComplete={(id) => mark(id)}
                         onSetTitle={(id, title) => update(id, title)}
                     />
                 </section>
