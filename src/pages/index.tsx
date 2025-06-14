@@ -8,9 +8,28 @@ import { Todo } from "src/models/todo";
 import { Filter } from "src/models/filter";
 import { useEffect, useState } from "react";
 import useAppState from "src/hooks/useAppState";
+import { useRouter } from 'next/router';
 
 export default function Home() {
-    const [ filter, setFilter ] = useState<Filter>("all"); 
+    const [ filter, setFilter ] = useState<Filter>("all");
+    const router = useRouter();
+
+    useEffect(() => {
+        const onHashChangeStart = (url: string) => {
+            const a = url.split("/").pop() || "all";
+
+            console.log(`Path changing to ${url} ${a}`);
+            setFilter(a as Filter);
+        };
+
+        // Need to use next.js router, instead of adding window event listener for `hashchange`, since
+        // the event doesn't get triggered.
+        router.events.on("hashChangeStart", onHashChangeStart);
+
+        return () => {
+            router.events.off("hashChangeStart", onHashChangeStart);
+        };
+    }, [router.events]);
 
     const { add, mark, markAll, remove, edit, update, removeDone, getTodos, undo, redo } = useAppState({ todos: [], filter: "all" });
 
@@ -65,7 +84,7 @@ export default function Home() {
                 </section>
 
                 <TodoFooter
-                    filter="all"
+                    filter={filter}
                     numActiveTodos={numActiveTodos}
                     numTodos={totalTodos}
                     onClearCompleted={ () => removeDone() }
