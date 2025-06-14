@@ -18,7 +18,6 @@ export default function Home() {
         const onHashChangeStart = (url: string) => {
             const a = url.split("/").pop() || "all";
 
-            console.log(`Path changing to ${url} ${a}`);
             setFilter(a as Filter);
         };
 
@@ -33,23 +32,22 @@ export default function Home() {
 
     const { add, mark, markAll, remove, edit, update, removeDone, getTodos, undo, redo } = useAppState({ todos: [], filter: "all" });
 
-    const filterAll = (t: Todo) => t;
-    const filterActive = (t: Todo) => !t.completed;
-    const filterCompleted = (t: Todo) => t.completed;
+    const filters = {
+        active: (t: Todo) => !t.completed,
+        completed: (t: Todo) => t.completed,
+    };
 
     let todos = getTodos();
 
-    if (filter == "all") {
-        todos = todos.filter(filterAll);
-    } else if (filter == "active") {
-        todos = todos.filter(filterActive);
-    } else {
-        todos = todos.filter(filterCompleted);
-    }
-
     const totalTodos = todos.length;    
-    const numActiveTodos = todos.filter(filterActive).length;
+    const numActiveTodos = todos.filter(filters.active).length;
     const numCompletedTodos = totalTodos - numActiveTodos;
+
+    if (filter == "active") {
+        todos = todos.filter(filters.active);
+    } else if (filter == "completed") {
+        todos = todos.filter(filters.completed);
+    }
 
     return (
         <>
