@@ -58,7 +58,7 @@ export default function useAppState(initialState: AppState): {
     };
 
     const update = (id: number, title: string) => {
-        appState.todos = appState.todos.map((t: Todo) => t.id !== id ? t : { ...t, title });
+        appState.todos = appState.todos.map((t: Todo) => t.id !== id ? t : { ...t, title, editing: false });
         save();
     };
 
