@@ -26,8 +26,13 @@ export default function useAppState(initialState: AppState): {
     const [ redoStack, setRedoStack ] = useState<AppState[]>([]);
 
     const save = () => {
-        setUndoStack([ ...undoStack, appState ]);
+        console.log(`appState: ${appState}`, appState);
+        setUndoStack([ ...undoStack, { ...appState } ]);
         setRedoStack([]);
+
+        console.log(`save()`);
+        console.log(`save() ${undoStack.length} ${redoStack.length}`, undoStack, redoStack);
+        console.log(`save()`);
     };
 
     const add = (title: string) => {
@@ -38,7 +43,10 @@ export default function useAppState(initialState: AppState): {
             completed: false,
         };
 
-        setAppState({ ...appState, todos: [ ...appState.todos, newTodo ] });
+        console.log(`add(${title})`);
+
+        appState.todos = appState.todos.concat(newTodo);
+        // setAppState({ ...appState, todos: [ ...appState.todos, newTodo ] });
         save();
     };
 
@@ -83,6 +91,7 @@ export default function useAppState(initialState: AppState): {
     
     const undo = () => {
         console.log(`undo()`);
+
         if (undoStack.length > 1) {
             const last = undoStack[undoStack.length - 1];
             const target = undoStack[undoStack.length - 2];
@@ -91,6 +100,9 @@ export default function useAppState(initialState: AppState): {
             setRedoStack([ ...redoStack, last ]);
             setAppState(target);
         }
+
+        console.log(`undo() ${undoStack.length} ${redoStack.length}`, undoStack, redoStack);
+
     };
 
     const redo = () => {
@@ -103,6 +115,8 @@ export default function useAppState(initialState: AppState): {
             setRedoStack(redoStack.slice(0, redoStack.length - 1));
             setAppState(last);
         }
+
+        console.log(`redo() ${undoStack.length} ${redoStack.length}`, undoStack, redoStack);
     };
 
     return { add, mark, markAllActive, markAllCompleted, remove, edit, update, removeDone, getTodos, undo, redo };
